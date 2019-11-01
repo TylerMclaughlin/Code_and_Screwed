@@ -1,0 +1,168 @@
+setcps (108/60*1.25)
+setcps (108/60*1.2)
+
+d1 $ s "bd(4,8)"
+
+hush
+
+let screw =  slow 440 $ n "1 .. 440"
+
+let screw =  slow 432 $ n "1 .. 432"
+
+let wmW a b c = when (\t -> (t `mod` a) >= b &&  (t `mod` a)  < c)
+let wmp a b c = when (\t -> (t `mod` a) >= b &&  (t `mod` a)  < (b+c))
+let v1a = 3
+let v1b = 16*2 + 3
+let p1a = 32*2 + 3
+let c1a = 48*2 + 3
+let c1b = 64*2 + 3
+let v2a = 80*2 + 3
+let p2a = 96*2 + 3
+let c2a = 112*2 + 3
+let c2b = 128*2 + 3
+let b1 = 144*2 + 3
+let c3a = 163*2 + 3
+let c3b = (163 + 16)*2 + 3
+let c3c = (163 + 32)*2 + 3
+
+
+resetCycles
+
+let p = 0
+let q = 4
+
+
+hush
+d1 $ s "bd [hh hh] cp [hh sd]"
+
+d1 $ stack [
+        every' 16 3 (slice 4 "1 ~ 1*1.5 2")
+        $ every' 16 15 (slice 2 "1 2 1 ~ ")
+        $ every' 4 1 (slice 2 "1 1 ~ [2, 3] ")
+        $ screw # stack [
+          s "agiv1" # cut 1,
+          s "agid"
+        ],
+        --struct "<t*2 ~, [~ t*1.5] t>"
+        every' 8 5 (slice 4 "1 2 1 4")
+        $ screw # stack [
+            s "agiv2"
+       screw # s "agix1",
+       screw # s "agix2"
+   ] # unit "c" # shape 0.1
+
+resetCycles
+
+hush
+
+d1 $  stack [
+     screw # s "agix1",
+     screw # s "agix2",
+     slice 4 "1 2 5 4"
+     screw # s "agiv1",
+     screw # stack [
+       s "agiv2",
+       s "agis"
+     ]
+   ] # unit "c" # shape 0.1
+
+
+d1 $ stack [
+        fast 1
+        $ wmW 64 (16 + p) (20 + p - q) (slice 4 "1 ~ 1*1.5 2")
+        $ every' 16 11 (slice 2 "1 1 ~ [2 3] ")
+        $ every' 16 15 (slice 2 "1 2 1 ~ ")
+        $ every' 32 4 (slice 4 "1*2 ~ 1*2 ~ ")
+        $ every' 32 20 (slice 4 "1*2 ~ 3*2 ~ ")
+        $ stack [
+            every' 32 12 (struct "t(7,16)")
+           $ every' 32 14 (struct "t(4,15)")
+           $ every' 32 (12 + 16) (struct "t(3,8)")
+           $ every' 32 (14 + 16) (struct "t(4,15)")
+           $ every' 32 (16 + 16) (struct "t(3,8)")
+           $ every' 32 0 (struct "t(5,16)")
+           $ every' 32 4 (struct "t(9,16)")
+           $ every' 32 6 (struct "t(5,13)")
+           $ every 8 (struct "t(4,15, 5)")
+           $ screw # s "agiv1" # cut 1,
+          screw # s "agid"
+        ],
+        every' 8 5 (slice 4 "1 2 1 4")
+        $ screw # stack [
+            s "agiv2"
+             ],
+       screw # s "agix1",
+       screw # s "agix2"
+   ] # unit "c" # shape 0.1
+
+
+hush
+
+resetCycles
+
+-- make a move double in p2a
+-- a little double in verse
+
+hush
+setcps (108/60*1.12)
+resetCycles
+
+do
+  let vf1 = slice 4 " 1 1 ~ 3"
+  let vf2 = slice 4 " 1 1 3 2"
+  let cf1 = slice 2 " 1 4"
+  let cf3 = struct "t(3,8)"
+  let pf2 = slice 2 " 1 5"
+  --let pf1 = slice 4 " 1 4 ~ 4"
+  let pf1 = slice 4 " 1 2*1.5 3 4*1.5"
+  let cf2 = slice 4 " 1 4*2 ~ 4"
+  let t = 4
+  d1 $ fast 1
+     -- $ rotL (p2a)
+     $ every' 16 3 (struct "t t*2")
+     $ every' 16 7 (struct "t t*2") -- for second chorus
+     $ every' 422 (p1a + 12) (struct "t t*2")
+     $ every' 422 (p1a + 24) ((0.5 <~) . struct "t t*2")
+     $ every' 422 (p1a + 25) (struct "t(3,8)")
+     $ every' 422 (p2a + 12) (struct "t t*2")
+     $ every' 422 (p2a + 24) (struct "t(3,8)")
+     $ every' 422 (p2a + 25) (struct "t(3,8)")
+     -- $ every' 32 11 (struct "t t*2")
+     -- $ every' 32 (11 + 16) (struct "t t*2")
+     $ stack [ fast 1
+         $ wmp 422 (v1a + 8) (t) (vf1)
+         $ wmp 422 v1b t (vf2)
+         -- $ wmp 422 (p1a + 8) t (pf1)
+         $ wmp 422 (v2a + 8) t (vf1)
+         $ wmp 422 p2a t (pf2)
+         $ wmp 422 b1 t (struct "t*2 t(3,8)")
+         $ wmp 422 c3a t (cf3)
+         $ stack [
+            fast 1
+            -- $ every 4 (fast 2)
+            $ wmp 422 (v1a + 8) (t) (vf1)
+            -- $ wmp 422 (p1a + 16) t (pf1)
+            $ wmp 422 c1a (t+1) (cf1) --
+            -- $ every' 32 (14 + 16) (struct "t(4,15)")
+            -- $ every' 32 (16 + 16) (struct "t(3,8)")
+            -- $ every' 32 0 (struct "t(5,16)")
+            $ wmp 422 c1b (t+2) (cf2)
+            $ wmp 422 (v2a + 2) (t) (slice 4 " 1 2 1 2")
+            -- $ wmp 422 c2a (t+1) (cf1) --
+            $ wmp 422 c2a (t+2) (cf1) --
+            $ wmp 422 c2b (t+2) (cf2)
+            $ wmp 422 c3b t (cf1)
+            $ wmp 422 c3c (t+2) (cf2)
+            $ wmp 422 (c3c + 8) t (struct "t(3,8)")
+            $ screw # s "agiv1" # cut 1,
+            screw # s "agid" # cut 2
+           ],
+       fast 1
+       -- $ every' 8 7 (0.25 <~)kk
+       $ screw # s "agis" # cut 3,
+       screw # s "agix1" # cut 4,
+       struct "t(3,8)" $ screw # s "agix2" # cut 5,
+       fast 1
+       -- every' 8 7 (0.25 <~)
+       $ screw # s "agiv2" # cut 6
+       ] # unit "c" # shape 0.1
