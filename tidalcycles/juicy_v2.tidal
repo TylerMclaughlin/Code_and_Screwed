@@ -1,0 +1,215 @@
+let screw = slow 282 $ n "1 .. 282"
+--let screw = slow 282 $ n "1 .. 282"
+
+
+let wcw a b c = when (\t -> (t `mod` a) >= b &&  (t `mod` a)  < c)
+let mcm a b c = when (\t -> (t `mod` a) >= b &&  (t `mod` a)  < (b+c))
+
+
+setcps(85/60*1.025)
+
+resetCycles
+
+hush
+
+d1
+    $ stack [
+        fast 1
+        $ mcm 16 4 2 ( slice 4 "1 4 4 4")
+        $ mcm 16 8 2 ( slice 4 "1 4 4 2")
+        $ screw # s "dcjv" # cut 1,
+        fast 1
+        $ screw # s "dcji"
+    ] # unit "c"  # gain 1.0 # shape 0.2
+
+d1
+    $ stack [
+        fast 1
+        $ mcm 16 4 2 ( slice 4 "1 4 4 4" )
+        $ mcm 16 8 2 ( slice 4 "1 4 4 2")
+        $ mcm 16 12 1 ( slice 4 "1 1 3 3" . struct "t(3,8)")
+        $ mcm 16 0 1 ( slice 4 "1 2 2 2" . struct "t(3,8)")
+        $ screw # s "dcjv" # cut 1,
+        fast 1
+        $ screw # s "dcji"
+    ] # unit "c"  # gain 1.0 # shape 0.2
+
+hush
+
+resetCycles
+
+
+resetCycles
+
+do
+  let p = 3
+  let q = 1
+  let c1a = 3*4 + 2
+  let c1b = 9*4
+  let c2a = 23*4 + 2
+  let c2b = 29*4
+  let c3a = 43*4 + 2
+  let c3b = 49*4
+  let c4a = 59*4 + 2
+  let c4b = 65*4
+  -- let vp1 = slice 4 "1 4 4 2" . struct "t(3,8,2)"
+  -- let vp2 = slice 4 "1 4 4 4" . struct "t(5,8,2)"
+  -- let vp3 = slice 4 "1 4 4 4" . struct "t(5,16)"
+  -- let vp4 = slice 4 "1 1 2 4" . struct "t(3,8,3)"
+  let vp1 = slice 4 "1 1 2 2"--  . struct "t(3,8,2)"
+  let vp2 = slice 4 "1 2 1 2" . struct "t(5,8,2)"
+  let vp3 = slice 4 "1 4 3 4" . struct "t(5,16)"
+  let vp4 = slice 4 "1 1 2 4" . struct "t(3,8,3)"
+  let vp5 = slice 4 "1 4 3 2 4" . struct "t(3,8,2)"
+  let vp6 = slice 4 "1 2 1 2" . struct "t(5,8,2)"
+  let vp7 = slice 4 "1 4 3 4" -- . struct "t(5,16)"
+  let vp8 = slice 4 "~ 1 2 4" . struct "t(3,8,3)"
+  d1
+    -- $ rotL c1a
+    $ stack [
+        fast 1
+        -- $ every 4 (inside 2 (repeatCycles 2 . (200 <~)))
+        $ mcm (288) (c1a + p + 1) q ( vp1 )
+        $ mcm (288) (c1a + 4 + p - 1) q ( vp1 )
+        $ mcm (288) (c1a + 8 + p) q ( vp7 )
+        $ mcm (288) (c1a + 12 + p + 2) 2 ( vp2 . (struct "t t t*2 t") )
+        $ mcm 288 (c1a + 16 + p) q ( slice 4 "1 4 4 2" . struct "t(3,8,2)")
+        $ mcm 288 (c1a + 20 + p) q ( vp2 . (0.25 <~))
+        $ mcm 288 (c1a + 24 + p) q ( slice 8 "1 1*2 4 4" . struct "t(5,16)")
+        $ mcm 288 (c1a + 28 + p + 2) q ( vp2 . (struct "t t t*2 t") )
+        $ mcm 288 (c1a + 32 + p) 2 (struct "t(3,8) t(3,8)" )
+        $ mcm (288) (c2a + p + 1) q ( vp1 )
+        $ mcm (288) (c2a + 4 + p - 1) q ( vp1 )
+        $ mcm (288) (c2a + 8 + p) q ( vp7 )
+        $ mcm (288) (c2a + 12 + p + 2) 2 ( vp2 . (struct "t t t*2 t") )
+        $ mcm 288 (c2a + 16 + p) q ( slice 4 "1 4 4 2" . struct "t(3,8,2)")
+        $ mcm 288 (c2a + 20 + p) q ( vp2 . (0.25 <~))
+        $ mcm 288 (c2a + 24 + p) q ( slice 8 "1 1*2 4 4" . struct "t(5,16)")
+        $ mcm 288 (c2a + 28 + p + 2) q ( vp2 . (struct "t t t*2 t") )
+        $ mcm 288 (c2a + 32 + p) 2 (struct "t(3,8) t(3,8)" )
+        $ mcm (288) (c3a + p + 1) q ( vp1 )
+        $ mcm (288) (c3a + 4 + p - 1) q ( vp1 )
+        $ mcm (288) (c3a + 8 + p) q ( vp7 )
+        $ mcm (288) (c3a + 12 + p + 2) 2 ( vp2 . (struct "t t t*2 t") )
+        $ mcm 288 (c3a + 16 + p) q ( slice 4 "1 4 4 2" . struct "t(3,8,2)")
+        $ mcm 288 (c3a + 20 + p) q ( vp2 . (0.25 <~))
+        $ mcm 288 (c3a + 24 + p) q ( slice 8 "1 1*2 4 4" . struct "t(5,16)")
+        $ mcm 288 (c3a + 28 + p + 2) q ( vp2 . (struct "t t t*2 t") )
+        $ mcm 288 (c3a + 32 + p) 2 (struct "t(3,8) t(3,8)" )
+        $ mcm (288) (c4a + p + 1) q ( vp1 )
+        $ mcm (288) (c4a + 4 + p - 1) q ( vp1 )
+        $ mcm (288) (c4a + 8 + p) q ( vp7 )
+        $ mcm (288) (c4a + 12 + p + 2) 2 ( vp2 . (struct "t t t*2 t") )
+        $ mcm 288 (c4a + 16 + p) q ( slice 4 "1 4 4 2" . struct "t(3,8,2)")
+        $ mcm 288 (c4a + 20 + p) q ( vp2 . (0.25 <~))
+        $ mcm 288 (c4a + 24 + p) q ( slice 8 "1 1*2 4 4" . struct "t(5,16)")
+        $ mcm 288 (c4a + 28 + p + 2) q ( vp2 . (struct "t t t*2 t") )
+        $ mcm 288 (c4a + 32 + p) 2 (struct "t(3,8) t(3,8)" )
+        $ screw # s "dcjv" # cut 1,
+        fast 1
+        $ mcm 288 4 1 (struct "t*3")
+        $ mcm 288 8 1 (struct "t*3")
+        $ mcm 288 (c1a + 19) 1 (struct "t*2 t")
+        $ mcm 288 (c1a + 19 + 8) 1 (struct "t*2 t")
+        $ mcm 288 (c2a + 19) 1 (struct "t*2 t")
+        $ mcm 288 (c2a + 19 + 8) 1 (struct "t*2 t")
+        $ mcm 288 (c3a + 11) 1 (struct "t*2 t")
+        $ mcm 288 (c3a + 19) 1 (struct "t*2 t")
+        $ mcm 288 (c3a + 19 + 4) 1 (struct "t*2 t")
+        $ mcm 288 (c3a + 19 + 8) 1 (struct "t*2 t")
+        $ mcm 288 (c4a + 19) 1 (struct "t*2 t")
+        $ mcm 288 (c4a + 19 + 4) 1 (struct "t*2 t")
+        $ mcm 288 (c4a + 19 + 8) 1 (struct "t*2 t")
+        $ screw # s "dcji" # cut 2
+    ] # unit "c"  # gain 1.0 # shape 0.2
+
+resetCycles
+
+
+hush
+
+
+
+
+do
+  let p = 3
+  let q = 1
+  -- let vp1 = slice 4 "1 4 4 2" . struct "t(3,8,2)"
+  -- let vp2 = slice 4 "1 4 4 4" . struct "t(5,8,2)"
+  -- let vp3 = slice 4 "1 4 4 4" . struct "t(5,16)"
+  -- let vp4 = slice 4 "1 1 2 4" . struct "t(3,8,3)"
+  let vp1 = slice 4 "1 1 4 2" . struct "t(3,6) t(5, 6)"
+  let vp2 = slice 4 "1 2*2 1 2" . struct "t(5,8,2)"
+  let vp3 = slice 4 "1 4 3 4/2" . struct "t(5,16)"
+  let vp4 = slice 4 "1 1/2 2 4" . struct "t(3,8,3)"
+  let vp5 = slice 4 "1 4 3 2 4" . struct "t(7,16,2)"
+  let vp6 = slice 4 "1 2 [~ 1] 2" . struct "t(5,8,2)"
+  let vp7 = slice 4 "1 4 3 4" . struct "t(5,16)"
+  let vp8 = slice 4 "~ 1 2 4" . struct "t(3,8,3)"
+  d1
+    $ stack [
+        fast 1
+        -- $ every 4 (inside 2 (repeatCycles 2 . (200 <~)))
+        $ mcm 32 (0 + p) q ( vp1 )
+        $ mcm 32 (4 + p) q ( vp6 )
+        $ mcm 32 (8 + p) q ( vp7 )
+        $ mcm 32 (12 + p) q ( vp5 )
+        $ mcm 32 (16 + p) q ( slice 4 "1 4 4 2" . struct "t(3,8,2)")
+        $ mcm 32 (20 + p) q ( vp2 . (0.25 <~))
+        $ mcm 32 (24 + p) q ( slice 8 "1 1*2 4 4" . struct "t(5,16)")
+        $ mcm 32 (28 + p) q ( vp4 )
+        $ mcm 32 30 1 (struct "t(5,8,3) t(3,8)" )
+        $ screw # s "dcjv" # cut 1,
+        fast 1
+        $ mcm 16 4 1 (0.25 <~)
+        $ scre
+    ] # unit "c"  # gain 1.0 # shape 0.2
+
+
+resetCycles
+
+hush
+
+do
+  let p = 3
+  let q = 1
+  let v1a = 13*4
+  let v1b = 17*4
+  let v1c = 21*4
+  let v2a = 33*4
+  let v2b = 37*4
+  let v2c = 41*4
+  let v3a = 53*4
+  let v3b = 57*4
+  -- let vp1 = slice 4 "1 4 4 2" . struct "t(3,8,2)"
+  -- let vp2 = slice 4 "1 4 4 4" . struct "t(5,8,2)"
+  -- let vp3 = slice 4 "1 4 4 4" . struct "t(5,16)"
+  -- let vp4 = slice 4 "1 1 2 4" . struct "t(3,8,3)"
+  let vp1 = slice 4 "1 4 4 2" . struct "t(3,8,2)"
+  let vp2 = slice 4 "1 2 1 2" . struct "t(5,8,2)"
+  let vp3 = slice 4 "1 4 3 4" . struct "t(5,16)"
+  let vp4 = slice 4 "1 1 2 4" . struct "t(3,8,3)"
+  let vp5 = slice 4 "1 4 3 2 4" . struct "t(3,8,2)"
+  let vp6 = slice 4 "1 2 1 2" . struct "t(5,8,2)"
+  let vp7 = slice 4 "1 4 3 4" . struct "t(5,16)"
+  let vp8 = slice 4 "~ 1 2 4" . struct "t(3,8,3)"
+  d1
+    $ stack [
+        fast 1
+        -- $ every 4 (inside 2 (repeatCycles 2 . (200 <~)))
+        $ mcm (32) (0 + p) q ( vp1 )
+        $ mcm (32) (4 + p) q ( vp5 )
+        $ mcm ( 32) (8 + p) q ( vp7 )
+        $ mcm 32 (12 + p) q ( vp5 )
+        $ mcm 32 (16 + p) q ( slice 4 "1 4 4 2" . struct "t(3,8,2)")
+        $ mcm 32 (20 + p) q ( vp2 . (0.25 <~))
+        $ mcm 32 (24 + p) q ( slice 8 "1 1*2 4 4" . struct "t(5,16)")
+        $ mcm 32 (28 + p) q ( vp4 )
+        $ mcm 32 30 1 (struct "t(3,8) t(3,8)" )
+        $ screw # s "dcjv" # cut 1,
+        fast 1
+        $ mcm 32 4 1 (struct "t*3")
+        $ mcm 288 8 1 (struct "t*3")
+        $ mcm 64 60 1 (struct "t*2 t")
+        $ screw # s "dcji" # cut 2
+    ] # unit "c"  # gain 1.0 # shape 0.2
