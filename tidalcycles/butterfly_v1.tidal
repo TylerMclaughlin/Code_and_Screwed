@@ -1,0 +1,107 @@
+let screw = slow 397 $ n "1 .. 397"
+
+
+
+let flanger lfoRate nudgeAmount pitchAmount = nudge (fast lfoRate $ range (-nudgeAmount) nudgeAmount sine) # speed (fast lfoRate $ range (1 - pitchAmount) (1 + pitchAmount) sine)
+let mcm a b c = when (\t -> (t `mod` a) >= b &&  (t `mod` a)  < (b+c))
+
+
+d2 $ slow 2 $ euclid 3 8 $ fast 2 $ juxBy 0.9 (# flanger 0.0121 0.01 0.02 ) $ s "[arpy:2, arpy:3, arpy:5, bd:8]"
+    # room 0.2 # gain 1.2 # shape 0.2
+
+
+
+setcps(134.92/60*1.06)
+
+resetCycles
+
+hush
+
+resetCycles
+
+do
+  let inst1 = 9*4 + 2
+  let inst2 = 29*4 + 2
+  let outro = 57*4 + 2
+  d1 $ stack [
+    juxBy 0.5 (mcm 32 8 8 (slow 4 . slice 8 " 1 4 1 4 1 4 1 4" . fast 4)  )
+    -- $ every 2 (rev . struct "t(3,4)")
+    $ mcm 32 12 4 (slice 2 "1 2" )
+    $ mcm 32 20 4 (slice 2 "2 1" )
+    $ mcm 32 4 4 (slow 2 . struct "t(3,8)". fast 2)
+    $ mcm 397 (outro - 2) 32 ( (# speed 0.75))
+    -- $ mcm 397 (outro + 16) 16
+    $ stack [
+        (# flanger 0.5 0.005 0.33)
+        $ screw # s "sdkbv" # legato 2 # gain 0.9,
+        mcm 16 0 4 (slice 4 "1 1 2 3")
+        $ mcm 16 8 4 (slice 4 "1 1 2 3" )
+        $ screw # s "sdkbv" # legato 2] # coarse 2 # orbit 0 # room 0.1 # shape 0.2,
+    mcm 32 14 2 (slice 2 "3 3")
+    $ mcm 32 (14 + 16) 2 (slice 2 "4 3")
+    $ mcm 397 (inst1 + 7 ) 1 (slice 2 "2 2 ") -- inst2
+    $ mcm 397 (inst2 + 7 ) 1 (slice 2 "2 2 ") -- inst2
+    -- $ mcm 64 (14 + 32) 2 (slice 2 "1 1")
+    -- $ mcm 64 (14 + 48) 2 (slice 4 "3 3")
+    $ screw # s "sdkbi" # orbit 1 # room 0.21 # shape 0.21 # coarse 3
+    ] # unit "c" -- # gain 1.2
+
+resetCycles
+
+do
+  let c1 = 21*4 - 2
+  let c2 = 41*4 - 2
+  let a1 = 49*4 - 2
+  let c3 = 65*4 - 2
+  let c4 = 73*4 - 2
+  let a2 = 81*4 - 2
+  d1 $ stack [
+    -- mcm 397 (c1 + 8) 8 (slow 4 . slice 8 " 1 4 1 4 1 4 1 4" . fast 4)
+    juxBy 0.5 ( fast 1) -- (slow 4 . slice 8 " 1 4 1 4 1 4 1 4" . fast 4)  )
+    $ mcm 397 (c1 + 2 + 16) 4 (slow 2 . struct "t(5,8)". fast 2)
+    $ mcm 397 (c1 + 11) 4 (slice 2 "1 2" )
+    $ mcm 397 (c1 + 11 + 16) 4 (slice 2 "1 2" )
+    $ mcm 397 (c1 + 19) 4 (slice 2 "2 1" )
+    $ mcm 397 (c1 + 19 + 16) 4 (slice 2 "2 1" )
+    $ mcm 397 (c2 + 2 + 16) 4 (slow 2 . struct "t(5,8)". fast 2)
+    $ mcm 397 (c2 + 11) 4 (slice 2 "1 2" )
+    $ mcm 397 (c2 + 11 + 16) 4 (slice 2 "1 2" )
+    $ mcm 397 (c2 + 19) 4 (slice 2 "2 1" )
+    $ mcm 397 (c2 + 19 + 16) 4 (slice 2 "2 1" )
+    -- $ mcm 397 (a1 + 13) 1 (slice 4 "1 1 1 1" )
+    $ mcm 397 (a1) 12 (slice 4 "2 2 2 1" )
+    $ mcm 397 (a1 + 16) 12 (slice 4 "2 2 2 1" )
+    $ mcm 397 (a2) 12 (slice 4 "2 2 2 1" )
+    $ mcm 397 (a2 + 16) 12 (slice 4 "2 2 2 1" )
+    -- $ mcm 397 (c3) 32 ( (# speed 0.75))
+    $ mcm 397 (c3 + 2 + 16) 4 (slow 2 . struct "t(5,8)". fast 2)
+    $ mcm 397 (c3 + 11) 4 (slice 2 "1 2" )
+    $ mcm 397 (c3 + 11 + 16) 4 (slice 2 "1 2" )
+    $ mcm 397 (c3 + 19) 4 (slice 2 "2 1" )
+    $ mcm 397 (c3 + 19 + 16) 4 (slice 2 "2 1" )
+    $ mcm 397 (c4 + 2 + 16) 4 (slow 2 . struct "t(5,8)". fast 2)
+    $ mcm 397 (c4 + 11) 4 (slice 2 "1 2" )
+    $ mcm 397 (c4 + 11 + 16) 4 (slice 2 "1 2" )
+    $ mcm 397 (c4 + 19) 4 (slice 2 "2 1" )
+    $ mcm 397 (c4 + 19 + 16) 4 (slice 2 "2 1" )
+    $ stack [
+        (# flanger 0.5 0.005 0.5)
+        $ screw # s "sdkbv" # legato 2 # gain 0.9,
+        --every' 8 5 (slice 1 "1")
+        --mcm 8 5 3 (slice 1 "1")
+        -- mcm 397 (c1 + 15) 4 (slice 4 "1 1 2 3")
+        -- $ mcm 16 8 4 (slice 4 "1 1 2 3" . (0.25 ~>))
+        -- $ mcm 397 (c1 + 23) 4 (slice 4 "1 1 2 3" )
+        screw # s "sdkbv" # legato 2] # coarse 2 # orbit 0 # room 0.1 # shape 0.2,
+    mcm 397 (c1 + 14) 2 (slice 2 "3 3")
+    $ mcm 397 (c1 + 14 + 16) 2 (slice 2 "3 3")
+    $ mcm 397 (c2 + 14) 2 (slice 2 "3 3")
+    $ mcm 397 (c2 + 14 + 16) 2 (slice 2 "3 3")
+    $ mcm 397 (c3 + 14) 2 (slice 2 "3 3")
+    $ mcm 397 (c3 + 14 + 16) 2 (slice 2 "3 3")
+    $ mcm 397 (c4 + 14) 2 (slice 2 "3 3")
+    $ mcm 397 (c4 + 14 + 16) 2 (slice 2 "3 3")
+    -- $ mcm 64 (14 + 32) 2 (slice 2 "1 1")
+    -- $ mcm 64 (14 + 48) 2 (slice 4 "3 3")
+    $ screw # s "sdkbi" # orbit 1 # room 0.21 # shape 0.21 # coarse 3
+    ] # unit "c" -- # gain 1.2
