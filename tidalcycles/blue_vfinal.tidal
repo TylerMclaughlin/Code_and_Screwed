@@ -1,0 +1,288 @@
+setcps 1.05
+
+d1 $ s "yaxu"
+d1 $ s "bd(3,8)" # coarse "<1 2 3 4 5 6 7 8 9 10>"
+
+do
+  let pat = "<1 2 3 4 5 6 7 8 9 10>"
+  d2 $ every 4 (hurry 2) $ stack [
+   s "bd(3,8,3)" # coarse (fast 3.5 $ pat)
+   ,hurry 2 $ s  "~ ho ~ [~ho]*2 "
+   ,s "hh(3,8)" # coarse (rev $ pat) # lpf 4000 # rel 0.5
+   ] # shape 0.1 # room 0.2 # squiz "<1 2 8 256 2000>"
+
+hush
+
+d1 $ "bd(3,8)"
+
+d1 $ slow (every 4 (4 |/) $ 4) $ n (run 600) # stack [
+    s "e6b" ,
+    s "e6v" # gain 0.5 # coarse 6
+    ]
+
+d1 $ s "e6x" # n "1 .. 400"
+
+setcps 1.28
+
+
+hush
+
+d1
+   -- $ degradeBy 0.15
+   $ every 13 (within (0, 0.25) (# gain 0.9))
+   $ every 3 (chop "<4 2 5>")
+   $ whenmod 7 8 (rev)
+   $ every 4 (# shape 0.4 )
+   $ every 6 (# rel 0.4)
+   $ every 8 (# accelerate 0.3)
+   $ every 7 (degradeBy 0.3)
+   $ every 5 (juxBy 0.9 ( (0.75 <~)))
+   $ hurry 1 $ slow 300 $ inside "8" (repeatCycles 1) $ n "1  .. 600" # stack [
+    --s "e6d" # cut 3,
+    within (0.4, 0.8) (rev) $ s "e6p" # cut 4
+    --, s "e6b" # cut 5
+    , s "e6x" # cut 2
+    ,  every 8 (fast 3) $ every 32 (degradeBy 0.2) $ s "e6v" # cut 1
+  ] # unit "r" # rel 0.9 # shape 0.2 # (room 0.2 # lpf 4000) # hpf 100
+
+--hush
+
+--d1 silence
+-- d3 silence
+--d2 silence
+
+d2 $ hurry 1
+   $ degradeBy 0.05
+   $ every 3 (# coarse 2)
+   $ every 12 (# accelerate "0.4 0.35 0.38 0.35")
+   $ every 4  (within (0.75, 1) (fast 1.5) ) $ slow 300
+   $ inside "8" (repeatCycles 1) $ n "1 .. 600" # stack [
+       degradeBy 0.2 $ s "e6g" # cut 7
+       , s "e6s" # cut 8 # coarse 3 # rel 0.2 # hpf 8000
+       , every 4 (# gain 0.8) $ s "e6b" # cut 5
+     ] # shape 0.4 # unit "r"
+
+d3 $ slow 300 $ inside "8" (repeatCycles 1)
+   $ every 16 (# accelerate 0.4)
+   $ n "1 .. 600" # stack [
+   s "e6d" ,
+   every 8 (# gain 1)
+   $ s "e6k" # cut 11 # shape 0.3
+   # room 0.4 # lpf 1000 # coarse 2
+   ] # unit "r" # lpf 10000
+
+d1 $  n (run 600) # s "e6v"
+
+hush
+
+d1 $ slow 200 $ n "1 .. 600" # stack [
+    s "e6b" ,
+    s "e6v" # gain 0.5 # coarse 6
+    ]
+
+d1 $ n "1 ~ ~ 2 ~ 3 ~ ~ 4 ~" # s "drum"
+d2 $ (0.5 <~ ) $ s "<[cp ~ ~ [ ~ ~ sd]] sd>" # waveloss 40 # room "0.5" # size "<0.1 0.5 0.9>" # coarse 20
+
+hush
+
+d1 $ n "[1 4 ~ 2 5 ~ 3 7 8 9]*4" # s "drum" # waveloss "20 66.6 80 10"
+
+
+
+d1 $ n "[1 4 ~ 2 5 ~ 3 7 8 9]*4" # s "drum" # waveloss "20 66.6 80 10"
+
+
+
+
+d1 $ within (0.24, 0.887) (chop 4 . rev) $ n "[1 4]" # s "drum" # room "0.5" # size "<0.1 0.5 0.9>" # coarse 20 # phaserdepth 4 # rel 0.1
+
+d1 $ loopAt "<8 4 16>" $ chop 64 $  sound "bev*4" # cut 1 # lpf (slow 16 $ rangex 1 8000 sine)
+
+d1 $ hurry 2 $ s "bev:3" # cut 1  # lpf (slow 16 $ rangex 1000 19000 sine) # resonance 0.8 # coarse 20
+
+d3 $ s " ~ hh ~ hh hh ~ ~ hh ~ hh"
+d4 $ slow 2 $ s "bd*4 [cp bd*3] bd*4 [cp bd bd bd]"
+d5 $ slow 2 $ s "hh*4 [~ hh*3 ~ hh] hh*4 [~ hh ~ hh*2]" # gain "1.2 1 1.1. 1"
+
+d4 $
+
+d1 $ cat [ s "sd*2", s "sd*2 sd", s "sd*2 sd*3" # speed (range 5 1 saw), s "[sd ~ sd*3 sd*3] [sd*3 sd*3 ~ ~]" # speed (range 4 1 saw)]
+
+d1 $ every 8 rev $ every 4 (fast 12) $ every 3 (fast 2) $ every 6 (# speed (range 2 1 saw)) $ s "sd"
+
+hush
+
+d1 $ s "bd(5,8)"
+
+setcps 1.3
+
+do
+  let pat = "1 .. 600"
+    d1 $ slow 200 $ n "1 .. 600" # stack [
+
+    ]
+
+let asdf p = inside p (repeatCycles p)
+
+asdf 4
+
+hush
+
+setcps 1.4
+-- happiness!
+d1 $ hurry 2.5 $ slow 240 $ inside "16 " (repeatCycles 2) $ n "1 .. 600" # stack [
+     degradeBy 0.2 $ s "e6v" # speed (3/2) # cut 1,
+     s "e6k" # cut 2,
+     s "e6p" # cut 3,
+     s "e6s" # cut 4,
+     s "e6d" # cut 5,
+     s "e6x" # cut 6,
+     s "e6b"  # cut 7
+    ] # unit "c" # shape 0.2 # room 0.2 # rel 1 # coarse " 1 2 3 8"
+
+hush
+
+d1 $ slow 4 $ n " 1 .. 4" # s "numbers" # cut 1
+
+
+d1 $ hurry 3.5 $ slow 400 $ stack [
+     degradeBy 0.2 $ s "e6v" # cut 1,
+     s "e6k" # cut 2,
+     s "e6p" # cut 3,
+     s "e6s" # cut 4,
+     s "e6v" # cut 5,
+     s "e6x" # cut 6,
+     s "e6b" # cut 7
+    ] # n "1 .. 640" # unit "c" # shape 0.2 # room 0.2
+
+
+d2 $ fast 1.5 $ hurry 1.5 $ slow 400 $ inside 8 (repeatCycles 4) $ n "1 .. 640" # stack [
+  s "e6k" # cut 2,
+  s "e6v" # cut 3,
+  s "e6p" # cut 4,
+   s "e6b" # cut 6,
+  degradeBy 0.9 $ s "e6v" # cut 5
+] # unit "c" # shape 0.2 # coarse "1 2 4"
+
+
+--8 7 6 5 4 3 2 1
+d3 $ slow 4 $ inside 1 (rev) $ n "1 .. 8" # s "numbers" # cut 1
+
+-- 8 7 6 5 4 3 2 1
+d3 $ slow 8 $ inside 1 (rev) $ n "1 .. 8" # s "numbers" # cut 1
+
+
+-- 3 2 1 8 7 6 5 4
+d3 $ slow 8 $ inside 2 (rev) $ n "1 .. 8" # s "numbers" # cut 1
+
+-- 7 6 2 1 5 4 8 7 6
+d3 $ slow 8 $ inside 3 (rev) $ n "1 .. 8" # s "numbers" # cut 1
+
+-- 7 2 1 4 3 6 5 8
+d2 $ slow 8 $ inside 4 (rev) $ n "1 .. 8" # s "numbers" # cut 1
+hush
+
+-- 1 2 3 4 1 2 3 4 5 6 7 8 5 6 7 8
+d2 $ slow 8 $ inside 2 (repeatCycles 2) $ n "1 .. 8" # s "numbers" # cut 1
+
+
+
+d1 $ s "bd hh cp hh"
+
+d3 $ slow 4 $ inside 1 (rev) $ n "1 .. 8" # s "numbers" # cut 1
+
+    hush
+
+setcps 1.2
+
+d1 $ hurry 3.5 $ slow 400 $ n "1 .. 640" # s "e6b" # unit "c"
+
+d1 $ slice 4 "1 .. 4" $ s "bev" # cut 1
+
+hush
+
+let tn = (1/32)
+    grain s w = begin s # end (s + w)
+    sn' m = (1/16) * m
+
+  silence "algo"
+hush
+
+p "algo"
+ $ s "numbers*8" # n "1 .. 8" # gain 0.8 # cut 1
+ >| grain (sn' "1 2 3 4*4") (1/4)
+
+ d1 $ s "numbers:2*4" # n (run 4)
+
+ d1 $ s "bev" >| grain 3 4
+
+
+ d1 $ "0 ~ 0 ~ 0 [0 0]" |+ s "bd sd"
+
+  stack [
+  "bd sd",
+  n "1 .. 3" # sound "numbers"
+  ]
+
+  d1 $ n "4 ~ 1 2 2 [1 0]" |+ stack [
+    s "bd sd hh [~ hh] cp",
+    slow 4 $ n "3 .. 4" # sound "numbers" # cut 2
+  ]
+
+  hush
+
+-- omg!  potential lead for replicating pattern.
+-- in stack too.
+-- from here!
+d1 $ (slow 2 $ n "1 ~ 1 2 2 [1 1]") |- stack [
+   s "bd sd hh [~ hh] cp",
+   slow 4 $ n "3 .. 4" # sound "numbers" # cut 2
+]
+
+-- close!
+d1 $ (  n "[-1] [-1] [-3] [-3]") |+ stack [
+  s "bd hh cp hh",
+  slow 2 $ n "1 .. 8" # sound "numbers" # cut 2
+]
+
+-- !
+d1 $ (  n "1 1 -1 -1") |+ stack [
+  s "bd hh cp hh",
+  slow 2 $ n "1 .. 8" # sound "numbers" # cut 2
+]
+
+hush
+d1
+   $ slow 4
+   $ slice 64 "[0..64]"
+   $ s "bev"
+   # accelerate (range (irand 8 - 8) (irand 8)  $ sine)
+
+   hush
+
+d1 $ s "e6v" # n (run 64)
+
+d1 $ chunk 4 (hurry 2) $
+  jux rev $ begin (off 0.125 (+0.1) $ "0.13 0.14 [~ 0.16] 0.5") # sound "bev" # sustain 0.13 # accelerate "-0.8" # hpf 300 # hpq 0.2
+
+d1 $ s "arpy*8" # n (run 8)
+
+d1 $ slow 32 $ jux (rev) $ striate' 32 (1/16) $ sound "bev"
+
+hush
+
+xfade
+
+
+hush
+d2 $ fast (slow 16 $ range 0 2 saw) $ stack [
+    s "bd bd bd bd*2"  # speed (slow 16 $ range 0 2 saw)
+    , s "~ hh ~ hh"
+    ]
+d2 $ silence
+
+
+do
+   let pat = "1 .. 4"
+   d2 $ (0.25 <~) $ n pat # s " ~ hh"
+   d3 $ n pat # s "numbers" # squiz "1 2 8 256"
