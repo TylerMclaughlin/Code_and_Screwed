@@ -1,0 +1,78 @@
+-- https://i.pinimg.com/originals/6e/27/e2/6e27e20723cdaa880fc3e58d4aec59ca.jpg
+
+let screw = slow 328 $ n "1 .. 328"
+let flanger lfoRate nudgeAmount pitchAmount = nudge (fast lfoRate $ range (-nudgeAmount) nudgeAmount sine) # speed (fast lfoRate $ range (1 - pitchAmount) (1 + pitchAmount) sine)
+let mcm a b c = when (\t -> (t `mod` a) >= b &&  (t `mod` a)  < (b+c))
+
+d1 $ slice 4 "1(3,8) 1(5,8) 1 " $ n "1 .. 4" # stack [ s "arpy", s "arpy" # flanger 0.5 0.02 "0.3333" ]
+
+d1 $ slice 4 "1 2 3(3,8) 4 " $ n "1 .. 4" # stack [ s "arpy", s "arpy"]
+
+hush
+
+setcps(96/60*1.14)
+setcps(96/60*1.09)
+setcps(96/60*1.04)
+setcps(96/60*1.24)
+
+resetCycles
+hush
+
+
+d3 $ s "909hh"
+
+d1 silence
+
+d2 $ stack [ slow 8 $ struct "t t t t t t [t t] t"
+    $ mcm 16 7 2 (struct "t t t*4 t")
+    $ n "3" # s "909bd"
+    # shape 0.8 # coarse 3 # up 1.5,--(fast 16 $ range 0.8 14 sine),
+    slow 2 $ struct " ~ t  ~ t*2 " $ slow 4 $ n "5" # stack[ s "909hh",
+     s "909hh" # flanger 0.32 0.03 0.05
+     ] # shape 0.8 # coarse 3 # up 1.1
+] # orbit 1 # room 0.2  # unit "r"
+
+hush
+
+resetCycles
+
+d1
+   -- $ fast 2 $ inside 2 (repeatCycles 2) $ slow 2
+   -- $ inside 1 (repeatCycles 1)
+   -- $ inside 4 (repeatCycles 4)
+   -- $ slice 4 " 3 3 3 3"
+   -- $ slice 4 " 1 1 1 1"
+   -- $ slice 4 " 2 2 2 2"
+   -- $ slice 4 " 4 2 4 2"
+   -- $ slice 4 " 3 1 3 1"
+   -- $ slice 4 " 3*2 1 3*2 1"
+   -- $ mcm 16 0 4 (slice 4 " 3 1 3 1")
+   -- $ mcm 16 4 4 (slice 4 " 3*2 1 3*2 1")
+   -- $ mcm 16 8 4 (slice 4 " 2 2 2 2")
+   $ mcm 64 8 2 (slice 4 "1 2 3 4" . slice 2 "1 2")
+   $ stack [
+   mcm 64 12 4 (slice 4 "1 1 1 2")
+   $ mcm 16 20 4 (slice 4 "2 2 1 2")
+   $ every' 32 30 ( slice 2 "3/2 4(3,8)" )
+   $ every' 4 0 ( slice 2 "[1 ~ ~ 1] 2(3,4,2)")
+   $ every' 32 5 (juxBy 0.5 (# accelerate 0.2))
+   $ every' 32 21 (juxBy 0.5 (# accelerate 0.1))
+   $ stack [
+        screw # s "esv1" # cut 1,
+        screw # s "<esv1>" # cut 6 # flanger 0.22222 0.02 "0.03 0.04 ",
+        struct "t(3,8)"
+        $ screw # s "esv2"# cut 2
+    ] ,
+    mcm 64 12 4 (slice 8 "1 2 3 4 5 6 7 8" . slice 4 "1 2 3 4" . slice 2 "1 2")
+    $ mcm 64 (8 + 32) 4 (slice 4 "1 2 3 4" . slice 2 "1 2")
+    $ mcm 64 (12 + 32) 4 (slice 8 "1 2 3 4 5 6 7 8" . slice 4 "1 2 3 4" . slice 2 "1 2")
+    $ every' 8 0 (slice 4 "1 2 2 2")
+    $ stack [
+        screw # s "esb" # cut 3 # coarse 4,
+        screw # s "esd" # cut 4,
+        screw # s "<esd>" # cut 7 # flanger 0.22222 0.02 "0.05 0.05 ",
+        screw # s "esg" # cut 5,
+        mcm 32 8 16 (# flanger 0.5 0.02 "0.5 0.3333 0.5 0.33333")
+        $ screw # s "<~ esg>" # cut 8
+    ] # room 0.2
+] # unit "c" # shape 0.2 # hpf 40
