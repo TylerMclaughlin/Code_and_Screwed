@@ -1,0 +1,94 @@
+setcps(115/60/1.04)
+
+let screw = slow 388 $ n "1 .. 388"
+let mcm a b c = when (\t -> (t `mod` a) >= b &&  (t `mod` a)  < (b+c))
+
+resetCycles
+
+hush
+d2 silence
+
+
+let flanger1 lforate amt = nudge (fast lforate $ range (-amt) amt sine)
+let flanger2 lforate lfopitch = speed (fast lforate $ range (1 - lfopitch) (1 + lfopitch) sine)
+
+hush
+
+resetCycles
+
+d2 $ slow 2 $  euclid "<3 5>" 8 $ fast "<3 5 8 9>" $ stack [s "[arpy:1, arpy:5, arpy:7, bd:8]", s "[arpy:1, arpy:5, arpy:7]"
+    # flanger1 0.051 0.01 # flanger2 0.051 0.02]
+    # lpf (slow 4 $ rangex 1000 4000 sine)
+    # room 0.2 # gain 1.2 # shape 0.2
+    -- # gain (slow 32 $ range 0.8 0.2 cosine)
+
+
+
+d2 $ slow 2 $ stack [
+             stack [s "bd(3,8) [hh hh] cp", s "bev" # cut 1],
+             stack [s "bd(3,8) [hh hh] cp", s "bev" # cut 2]
+             # flanger 14.5 0.02 # flanger2 14.5 0.25
+             ]
+
+d1 $ s "[bd(3,8), hh*2, cp/2]" # flanger 8 0.05 # flanger2 8 0.004
+d2 $ s "hh hh"
+
+hush
+
+resetCycles
+d2 silence
+
+
+do
+  -- let pat = (struct "t ~ t ~ ~ t ~ t " )
+  -- let pat = struct "t ~ t*2 ~ ~ t ~ t ~ ~ t t ~ ~ t t"
+  let pat = struct "<t(3,8,2) t(3,8)>"
+  -- let pat = struct "<t(3,8) t(3,8,2) t(3,8,3) t(3,8,6)>"
+  let pat2 = "t t t t t t t t*2"
+  let p = 2
+  let q = 8
+  let i = 3 -- 3
+  let b = 0
+  let j = 3 -- 2
+  let lfor = 20.211
+  let lfop = 0.025 -- 0.02
+  let nu = 0.041
+  --let lfor = slow 15 $ range 15 20.211 sine
+  --let lfop = slow 15 $ range 0 0.1 sine-- 0.02
+  --let nu = slow 17 $ range 0 0.06 sine
+  d1 $
+    fast 1
+    -- $ mcm 8 6 2 (slow 4 . struct "t [t [t ]" . fast 4)
+    $ stack [
+    -- slow 2 $ struct "<t(3,8) t(3,8,2) t(3,8,3) t(3,8,6)>"
+    fast 1
+    $ stack [
+        -- slow 4 $ struct pat
+        -- fast p
+        mcm 16 (2 + i) j (slow p .  pat . fast p)
+        $ mcm 16 (10 + i) j (slow p .  pat . fast p)
+        $ screw # s "wai" # cut 1 # gain 1.53,
+        screw # s "wai" # cut 4 # coarse 4
+        # nudge (slow lfor $ range (-nu) nu sine)
+        # speed (slow lfor $ range (1 - lfop) (1 + lfop) sine)
+        # gain 1.36,
+        fast 1
+        $ every' 16 2 (slow q . struct pat2 . fast q)
+        $ screw # s "wad" # cut 3 # coarse 4,
+        screw # s "wad" # cut 6 # coarse 4
+        # nudge (slow lfor $ range (-nu) nu sine)
+        # speed (slow lfor $ range (1 - lfop) (1 + lfop) sine)
+        # gain 1.36 -- # lpf 4000
+        ] # shape 0.35,
+    -- slice 4 "1 1 2 4"
+    mcm 16 (2 + b + i) j (slow p .  pat . fast p)
+    $ mcm 16 (10 + b + i) j (slow p .  pat . fast p)
+    $ screw # s "wav" # cut 2 # shape 0.25 # gain 1.53,
+    screw # s "wav" # cut 5 # coarse 3
+    # nudge (slow lfor $ range (-nu) nu sine)
+    # speed (slow lfor $ range (1 - lfop) (1 + lfop) sine)
+    # gain 1.36 # shape 0.25-- # lpf 8000
+    -- (# speed (range 0.8 1.1 $ slow 4.1 sine))
+   ] # unit "c"   # room 0.2 # orbit 1
+
+hush
