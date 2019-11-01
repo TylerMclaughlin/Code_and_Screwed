@@ -1,0 +1,100 @@
+setcps(115/60/1.06)
+
+-- background image;
+--data:image/jpeg;base64,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
+-- shortened version
+-- let screw = slow 388 $ n "1 .. 388"
+let screw = slow 797 $ n "1 .. 797"
+let mcm a b c = when (\t -> (t `mod` a) >= b &&  (t `mod` a)  < (b+c))
+
+resetCycles
+
+hush
+d2 silence
+
+
+let flanger1 lforate amt = nudge (fast lforate $ range (-amt) amt sine)
+let flanger2 lforate lfopitch = speed (fast lforate $ range (1 - lfopitch) (1 + lfopitch) sine)
+
+hush
+
+resetCycles
+
+d2 $ slow 2 $  euclid "<3 5>" 8 $ fast "<3 5 8 9>" $ stack [s "[arpy:1, arpy:5, arpy:7, bd:8]", s "[arpy:1, arpy:5, arpy:7]"
+    # flanger1 0.051 0.01 # flanger2 0.051 0.02]
+    # lpf (slow 4 $ rangex 1000 4000 sine)
+    # room 0.2 # gain 1.2 # shape 0.2
+    -- # gain (slow 32 $ range 0.8 0.2 cosine)
+
+
+
+d2 $ slow 2 $ stack [
+             stack [s "bd(3,8) [hh hh] cp", s "bev" # cut 1],
+             stack [s "bd(3,8) [hh hh] cp", s "bev" # cut 2]
+             # flanger 14.5 0.02 # flanger2 14.5 0.25
+             ]
+
+d1 $ s "[bd(3,8), hh*2, cp/2]" # flanger 8 0.05 # flanger2 8 0.004
+d2 $ s "hh hh"
+
+hush
+
+d2 silence
+
+resetCycles
+
+
+do
+  -- let pat = (struct "t ~ t ~ ~ t ~ t " )
+  -- let pat = struct "t ~ t*2 ~ ~ t ~ t ~ ~ t t ~ ~ t t"
+  let pat = struct "<t(3,8,2) t(3,8)>"
+  -- let pat = struct "<t(3,8) t(3,8,2) t(3,8,3) t(3,8,6)>"
+  let pat2 = "t t t t t t t t*2"
+  let p = 2
+  let q = 8
+  let i = 3 -- 3
+  let b = 0
+  let j = 3 -- 2
+  let lfor = 5.21111--   20.211
+  let lfop = 0.025 -- 0.02
+  let nu = 0.041
+  --let lfor = slow 15 $ range 15 20.211 sine
+  --let lfop = slow 15 $ range 0 0.1 sine-- 0.02
+  --let nu = slow 17 $ range 0 0.06 sine
+  d1 $
+    fast 1
+    -- $ mcm 8 6 2 (slow 2 . struct "t [t t  ]" . fast 2)
+    -- $ mcm 8 2 2 (struct "t(3,8)")
+    $ stack [
+    -- slow 2 $ struct "<t(3,8) t(3,8,2) t(3,8,3) t(3,8,6)>"
+    fast 1
+    $ stack [
+        -- slow 4 $ struct pat
+        -- fast p
+        mcm 16 (2 + i) j (slow p .  pat . fast p)
+        $ mcm 16 (10 + i) j (slow p .  pat . fast p)
+        $ screw # s "wai" # cut 1 # gain 1.53,
+        screw # s "wai" # cut 4 # coarse 4
+        # nudge (slow lfor $ range (-nu) nu sine)
+        # speed (slow lfor $ range (1 - lfop) (1 + lfop) sine)
+        # gain 1.36,
+        fast 1
+        $ every' 16 2 (slow q . struct pat2 . fast q)
+        $ screw # s "wad" # cut 3 # coarse 4,
+        screw # s "wad" # cut 6 # coarse 4
+        # nudge (slow lfor $ range (-nu) nu sine)
+        # speed (slow lfor $ range (1 - lfop) (1 + lfop) sine)
+        # gain 1.36 -- # lpf 4000
+        ] # shape 0.35,
+    -- slice 4 "1 1 2 4"
+    mcm 16 (2 + b + i) j (slow p .  pat . fast p)
+    $ mcm 16 (10 + b + i) j (slow p .  pat . fast p)
+    $ screw # s "wav" # cut 2 # shape 0.25 # gain 1.53,
+    screw # s "wav" # cut 5 # coarse 3
+    # nudge (slow lfor $ range (-nu) nu sine)
+    # speed (slow lfor $ range (1 - lfop) (1 + lfop) sine)
+    # gain 1.36 # shape 0.25-- # lpf 8000
+    -- (# speed (range 0.8 1.1 $ slow 4.1 sine))
+   ] # unit "c"   # room 0.2 # orbit 1
+
+hush
