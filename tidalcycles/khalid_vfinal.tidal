@@ -1,0 +1,29 @@
+
+
+setcps (136/60)
+
+
+let screw = slow 328 $ n "1 .. 328"
+let wmW a b c = when (\t -> (t `mod` a) >= b &&  (t `mod` a)  < c)
+
+
+hush
+
+resetCycles
+
+d1
+  $ stack [
+      -- slice 4 "3 2 1 4"
+      wmW 16 0 2 (slice 4 "3 2 1 4")
+      $ wmW 16 4 6 (slice 4 "1 2 1 4")
+      $ wmW 16 8 10 (slice 4 "3 2 3 4")
+      $ wmW 16 8 10 (slice 4 "3 1 1 4")
+      -- $ every' 8 4 (struct "t(3,8)")
+      $ every' 16 4 (struct "t(5,16)")
+      -- $ every' 16 12 (struct "t(5,8)")
+      screw # s "ktv",
+      every' 8 0 (slice 4 "2 2 1 2")
+      --  every' 16 0 (slice 4 "2 2 1 2")
+      -- $ every' 16 8 (slice 4 "2 3 1 2")
+      screw # s "kti"
+  ]  # unit "c"
