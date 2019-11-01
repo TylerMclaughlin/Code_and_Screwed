@@ -1,0 +1,119 @@
+-- https://pbs.twimg.com/media/DxhAlKkWwAAZlvS.jpg
+setcps (87.5 / 60)
+
+let wmW a b c = when (\t -> (t `mod` a) >= b &&  (t `mod` a)  < c)
+
+let screw = slow 320 $ n "1 .. 320"
+
+resetCycles
+hush
+
+let p = 8
+let q = 8
+
+hush
+
+resetCycles
+
+ d1 $ stack [
+       -- wmW 64 0 4 (slice 4 "1 1 3 5")
+       wmW 64 (16 - p) (20 - p + q) (slice 4 "1 1 3 5") $
+       every' 64 56 (struct "t(3,8)") $
+       wmW 64 (32 - p) (36 - p + q) (slice 4 "1 1 3 5") $
+       wmW 64 (48 - p) (52 - p + q) (slice 4 "1 1 3 5") $
+       screw # stack
+       [
+          s "dbv1" # cut 1,
+          s "dbv2" # cut 2,
+          s "dbv3" # cut 3
+       ] ,
+       screw # "dbx",
+       screw # stack
+       [
+          s "dbs1",
+          s "dbs2"
+       ]
+] # unit "c"
+
+d1 $ stack [
+      fast 1
+      $ wmW 16 2 4 (slice 4 "1 1 2*1.5 4")
+      $ wmW 16 6 8 (slice 4 "1 2 2 4")
+      $ wmW 16 10 12 (slice 4 "1 2 4*1.5 4")
+      -- $ wmW 16 14 16 (slice 4 "1 2 3 3*3")
+      $ wmW 16 14 16 (slice 4 "1 2 3 ~")
+      $ screw # stack [
+          s "dbv1" # cut 1,
+          s "dbv2" # cut 2,
+          s "dbv3" # cut 3
+      ],
+      screw # s "dbx",
+      fast 1
+      $ wmW 32 p 10 (slice 4 "1 2*2 4 2 ")
+      $ wmW 32 (16 + p) (16 + 10) (slice 4 "1 2*2 4*4 2")
+      $ wmW 32 (24 + p) (24 + 10) (slice 4 "1 2*2 4 2")
+      $ wmW 32 (32 + p) (32 + 10) (slice 4 "1 2*2 4*4 2")
+      $ screw # stack [
+          s "dbs1",
+          s "dbs2"
+      ],
+      fast 1
+      $ wmW 64 62 64 (slice 4 "1 1 3 3")
+      $ screw # stack [
+           s "dbc",
+           s "dbd"
+      ],
+      fast 1
+      $ slice 4 "1 4 2 3"
+      $ struct "t(3,8) t*2"
+      $ screw # stack [
+          s "dbp",
+          s "dbg",
+          s "dbpa",
+          s "dbw"
+      ]
+  ]
+
+
+  d1 $  stack [
+        fast 1
+        $ wmW 16 2 4 (slice 4 "1 1 2*1.5 4")
+        $ wmW 16 6 8 (slice 4 "1 2 2 4")
+        $ wmW 16 10 12 (slice 4 "1 2 4*1.5 4")
+        -- $ wmW 16 14 16 (slice 4 "1 2 3 3*3")
+        $ wmW 16 14 16 (slice 4 "1 2 3 ~")
+        $ wmW 64 (16 - p) (20 - p + q) (slice 4 "1 1 3 5")
+        $ every' 64 56 (struct "t(3,8)")
+        $ wmW 64 (32 - p) (36 - p + q) (slice 4 "1 1 3 5")
+        $ wmW 64 (48 - p) (52 - p + q) (slice 4 "1 1 3 5")
+        $ screw # stack [
+            s "dbv1" # cut 1,
+            s "dbv2" # cut 2,
+            s "dbv3" # cut 3
+        ],
+        screw # s "dbx",
+        fast 1
+        $ wmW 32 p 10 (slice 4 "1 2*2 4 2 ")
+        $ wmW 32 (16 + p) (16 + 10) (slice 4 "1 2*2 4*4 2")
+        $ wmW 32 (24 + p) (24 + 10) (slice 4 "1 2*2 4 2")
+        $ wmW 32 (32 + p) (32 + 10) (slice 4 "1 2*2 4*4 2")
+        $ screw # stack [
+            s "dbs1",
+            s "dbs2"
+        ],
+        fast 1
+        $ wmW 64 62 64 (slice 4 "1 1 3 3")
+        $ screw # stack [
+             s "dbc",
+             s "dbd"
+        ],
+        fast 1
+        $ slice 4 "1 4 2 3"
+        $ struct "t(3,8) t*2"
+        $ screw # stack [
+            s "dbp",
+            s "dbg",
+            s "dbpa",
+            s "dbw"
+        ]
+    ]
