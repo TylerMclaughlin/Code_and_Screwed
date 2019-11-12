@@ -6,3 +6,10 @@ TidalCycles and Python code for producing the album "Code and Screwed."
 ## Bandcamp Release
 https://rtyler.bandcamp.com/album/code-and-screwed
 
+
+
+### Version info
+
+tidal-1.4.0 in ghc-8.0.2
+
+Python 2.7.13, should also work in Python 3+
